@@ -1,58 +1,105 @@
 import streamlit as st
 import random
+import time
 
-# 카테고리별 메뉴 (더 풍성하게!)
-menus = {
-    "한식": [
-        ("김치찌개", "https://cdn.pixabay.com/photo/2021/11/01/12/34/kimchi-6761132_1280.jpg"),
-        ("비빔밥", "https://cdn.pixabay.com/photo/2017/06/19/20/23/bibimbap-2410514_1280.jpg"),
-        ("불고기", "https://cdn.pixabay.com/photo/2016/03/05/19/02/bulgogi-1239356_1280.jpg"),
-        ("삼겹살", "https://cdn.pixabay.com/photo/2017/07/16/10/43/pork-belly-2506399_1280.jpg"),
-        ("갈비탕", "https://cdn.pixabay.com/photo/2016/06/28/17/02/soup-1483560_1280.jpg"),
-        ("잡채", "https://cdn.pixabay.com/photo/2017/08/14/15/20/japchae-2649272_1280.jpg")
-    ],
-    "양식": [
-        ("피자", "https://cdn.pixabay.com/photo/2017/12/09/08/18/pizza-3007395_1280.jpg"),
-        ("파스타", "https://cdn.pixabay.com/photo/2017/01/22/19/20/pasta-2007379_1280.jpg"),
-        ("스테이크", "https://cdn.pixabay.com/photo/2016/03/05/19/02/steak-1239180_1280.jpg"),
-        ("햄버거", "https://cdn.pixabay.com/photo/2014/10/23/18/05/burger-500054_1280.jpg"),
-        ("샐러드", "https://cdn.pixabay.com/photo/2016/04/06/17/11/salad-1311490_1280.jpg"),
-        ("리조또", "https://cdn.pixabay.com/photo/2017/05/07/08/56/risotto-2293449_1280.jpg")
-    ],
-    "중식": [
-        ("짜장면", "https://cdn.pixabay.com/photo/2017/02/23/19/38/noodles-2090531_1280.jpg"),
-        ("짬뽕", "https://cdn.pixabay.com/photo/2015/08/11/22/08/soup-884630_1280.jpg"),
-        ("탕수육", "https://cdn.pixabay.com/photo/2016/09/06/20/33/chinese-food-1648749_1280.jpg"),
-        ("마라탕", "https://cdn.pixabay.com/photo/2020/07/21/06/49/malatang-5423257_1280.jpg"),
-        ("꿔바로우", "https://cdn.pixabay.com/photo/2017/08/06/11/19/chinese-food-2596089_1280.jpg"),
-        ("깐풍기", "https://cdn.pixabay.com/photo/2015/06/15/15/39/chinese-food-810436_1280.jpg")
-    ],
-    "분식": [
-        ("떡볶이", "https://cdn.pixabay.com/photo/2021/06/27/12/27/tteokbokki-6369625_1280.jpg"),
-        ("순대", "https://cdn.pixabay.com/photo/2017/07/16/10/43/korean-food-2506398_1280.jpg"),
-        ("김밥", "https://cdn.pixabay.com/photo/2017/07/16/10/44/kimbap-2506401_1280.jpg"),
-        ("라면", "https://cdn.pixabay.com/photo/2016/11/18/15/11/ramen-1834539_1280.jpg"),
-        ("오뎅탕", "https://cdn.pixabay.com/photo/2017/01/31/13/05/oden-2029177_1280.jpg"),
-        ("치즈돈까스", "https://cdn.pixabay.com/photo/2019/06/10/07/44/pork-cutlet-4264741_1280.jpg")
-    ],
-    "일식": [
-        ("초밥", "https://cdn.pixabay.com/photo/2017/05/07/08/56/sushi-2293488_1280.jpg"),
-        ("라멘", "https://cdn.pixabay.com/photo/2017/06/06/09/53/ramen-2377753_1280.jpg"),
-        ("돈부리", "https://cdn.pixabay.com/photo/2017/12/09/08/19/donburi-3007399_1280.jpg"),
-        ("규카츠", "https://cdn.pixabay.com/photo/2016/11/23/14/45/japanese-food-1850144_1280.jpg"),
-        ("가라아게", "https://cdn.pixabay.com/photo/2018/02/23/14/08/karaage-3177626_1280.jpg"),
-        ("우동", "https://cdn.pixabay.com/photo/2017/06/25/16/37/udon-2443023_1280.jpg")
+st.set_page_config(page_title="🧠 두뇌 게임 모음집", page_icon="🕹️")
+st.title("🧠 두뇌 게임 모음집")
+st.write("재밌게 두뇌를 자극해 보세요!")
+
+# 탭 나누기
+tabs = st.tabs(["📘 퀴즈 게임", "🔢 기억력 게임", "✊ 가위바위보", "🎨 색깔 단어 게임"])
+
+# ------------------ 1. 퀴즈 게임 ------------------
+with tabs[0]:
+    st.subheader("📘 랜덤 퀴즈 게임")
+    st.write("문제를 보고 정답을 골라보세요!")
+
+    quiz_data = [
+        {"q": "지구에서 가장 큰 대륙은?", "options": ["아시아", "아프리카", "유럽"], "answer": "아시아"},
+        {"q": "빛의 속도는?", "options": ["약 30만 km/s", "약 3만 km/s", "약 300km/s"], "answer": "약 30만 km/s"},
+        {"q": "우리 몸에서 가장 큰 장기는?", "options": ["폐", "간", "심장"], "answer": "간"},
+        {"q": "대한민국의 수도는?", "options": ["서울", "부산", "인천"], "answer": "서울"},
+        {"q": "피타고라스 정리는?", "options": ["a²+b²=c²", "E=mc²", "F=ma"], "answer": "a²+b²=c²"},
     ]
-}
 
-st.set_page_config(page_title="오늘 뭐 먹지?", page_icon="🍴")
-st.title("🍴 오늘 뭐 먹지? 메뉴 랜덤 뽑기")
-st.write("카테고리를 고르고 버튼을 눌러보세요! 😋")
+    quiz = random.choice(quiz_data)
+    choice = st.radio(quiz["q"], quiz["options"])
 
-# 카테고리 선택
-category = st.selectbox("👉 메뉴 카테고리 선택", list(menus.keys()))
+    if st.button("정답 확인", key="quiz"):
+        if choice == quiz["answer"]:
+            st.success("🎉 정답입니다!")
+        else:
+            st.error(f"❌ 오답! 정답은 {quiz['answer']}")
 
-if st.button("랜덤 추천 받기 🎲"):
-    menu, img_url = random.choice(menus[category])
-    st.subheader(f"오늘의 추천 메뉴는 👉 **{menu}** 🍽️")
-    st.image(img_url, caption=menu, use_column_width=True)
+# ------------------ 2. 기억력 게임 ------------------
+with tabs[1]:
+    st.subheader("🔢 숫자 기억력 게임")
+    st.write("숫자를 잘 보고 기억해보세요!")
+
+    if "number" not in st.session_state:
+        st.session_state.number = None
+
+    if st.button("새로운 숫자 생성"):
+        st.session_state.number = "".join([str(random.randint(0,9)) for _ in range(6)])
+        st.write("👀 3초 동안 숫자를 외우세요!")
+        st.write(f"**{st.session_state.number}**")
+        time.sleep(3)
+        st.empty()  # 숫자 감추기
+
+    if st.session_state.number:
+        answer = st.text_input("👉 기억한 숫자를 입력하세요:")
+        if st.button("제출", key="memory"):
+            if answer == st.session_state.number:
+                st.success("🎉 정확히 기억했어요!")
+            else:
+                st.error(f"❌ 틀렸습니다! 정답은 {st.session_state.number}")
+
+# ------------------ 3. 가위바위보 ------------------
+with tabs[2]:
+    st.subheader("✊✌️✋ 가위바위보 게임")
+    st.write("컴퓨터와 대결해보세요!")
+
+    choices = ["가위", "바위", "보"]
+    user_choice = st.radio("당신의 선택은?", choices)
+    if st.button("대결하기"):
+        comp_choice = random.choice(choices)
+        st.write(f"🤖 컴퓨터의 선택: **{comp_choice}**")
+        if user_choice == comp_choice:
+            st.info("😐 비겼습니다!")
+        elif (user_choice == "가위" and comp_choice == "보") or \
+             (user_choice == "바위" and comp_choice == "가위") or \
+             (user_choice == "보" and comp_choice == "바위"):
+            st.success("🎉 당신이 이겼습니다!")
+        else:
+            st.error("😢 졌습니다...")
+
+# ------------------ 4. 색깔 단어 게임 (Stroop Test) ------------------
+with tabs[3]:
+    st.subheader("🎨 색깔 단어 게임")
+    st.write("단어가 아니라 **글자 색깔**을 맞춰보세요!")
+
+    colors = ["빨강", "파랑", "초록", "노랑", "검정"]
+    color_codes = {
+        "빨강": "red",
+        "파랑": "blue",
+        "초록": "green",
+        "노랑": "yellow",
+        "검정": "black"
+    }
+
+    if st.button("새 문제 생성"):
+        st.session_state.word = random.choice(colors)
+        st.session_state.color = random.choice(list(color_codes.values()))
+
+    if "word" in st.session_state and "color" in st.session_state:
+        st.markdown(
+            f"<h2 style='color:{st.session_state.color}; text-align:center;'>{st.session_state.word}</h2>",
+            unsafe_allow_html=True
+        )
+        user_answer = st.radio("👉 글자 색깔은 무엇일까요?", colors)
+        if st.button("정답 확인", key="stroop"):
+            correct = [k for k, v in color_codes.items() if v == st.session_state.color][0]
+            if user_answer == correct:
+                st.success("🎉 정답입니다! 색깔을 제대로 구분했네요.")
+            else:
+                st.error(f"❌ 오답! 정답은 {correct} 색입니다.")
